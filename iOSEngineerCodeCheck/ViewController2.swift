@@ -11,18 +11,15 @@ import UIKit
 class ViewController2: UIViewController {
     
     @IBOutlet weak var repoImageView: UIImageView!
-    
     @IBOutlet weak var titleLabel: UILabel!
-    
     @IBOutlet weak var languageLabel: UILabel!
-    
     @IBOutlet weak var starsLabel: UILabel!
     @IBOutlet weak var watchersLabel: UILabel!
     @IBOutlet weak var forksLabel: UILabel!
     @IBOutlet weak var issuesLabel: UILabel!
     
     var vc1: ViewController!
-        
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -53,7 +50,5 @@ class ViewController2: UIViewController {
                 }.resume()
             }
         }
-        
     }
-    
 }
