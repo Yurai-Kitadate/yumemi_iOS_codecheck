@@ -31,6 +31,7 @@ class ViewController2: UIViewController {
     }
     
     func setLabelsText(repo:[String : Any]){
+        
         languageLabel.text = "Written in \(repo["language"] as? String ?? "")"
         starsLabel.text = "\(repo["stargazers_count"] as? Int ?? 0) stars"
         watchersLabel.text = "\(repo["watchers_count"] as? Int ?? 0) watchers"
@@ -42,7 +43,7 @@ class ViewController2: UIViewController {
         
         let repo = vc1.repo[vc1.selectedRowIdx]
         
-        titleLabel.text = repo["full_name"] as? String
+        titleLabel.text = repo["full_name"] as? String ?? ""
         
         if let owner = repo["owner"] as? [String: Any], let imgURL = owner["avatar_url"] as? String,let url = URL(string: imgURL){
             URLSession.shared.dataTask(with: url) { (data, res, err) in

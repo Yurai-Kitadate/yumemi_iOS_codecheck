@@ -19,6 +19,7 @@ class ViewController: UITableViewController, UISearchBarDelegate {
     var selectedRowIdx: Int = 0
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         //searchBarのデリゲートとtextの初期値を設定
         searchBar.text = "GitHubのリポジトリを検索できるよー"
@@ -50,6 +51,7 @@ class ViewController: UITableViewController, UISearchBarDelegate {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
         if segue.identifier == "Detail"{
             if let detail = segue.destination as? ViewController2 {
                 detail.vc1 = self
@@ -58,6 +60,7 @@ class ViewController: UITableViewController, UISearchBarDelegate {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
         return repo.count
     }
     
@@ -72,6 +75,7 @@ class ViewController: UITableViewController, UISearchBarDelegate {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         // 選択されたrowのdetailに遷移
         selectedRowIdx = indexPath.row
         performSegue(withIdentifier: "Detail", sender: self)
