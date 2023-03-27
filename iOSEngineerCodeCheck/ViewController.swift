@@ -80,4 +80,14 @@ class ViewController: UITableViewController, UISearchBarDelegate {
         selectedRowIdx = indexPath.row
         performSegue(withIdentifier: "Detail", sender: self)
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+        super.viewWillAppear(animated)
+        
+        if let indexPath = tableView.indexPathForSelectedRow {
+            tableView.deselectRow(at: indexPath, animated: true)
+            tableView.scrollToRow(at: indexPath, at: .none, animated: true)
+        }
+    }
 }
