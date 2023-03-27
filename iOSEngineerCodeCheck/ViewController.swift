@@ -16,17 +16,17 @@ class ViewController: UITableViewController, UISearchBarDelegate {
     var task: URLSessionTask?
     var word: String!
     var url: String!
-    var selectedColumnIdx: Int!
+    var selectedRowIdx: Int!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        //searchBarのデリゲートとtextの初期値を設定
         searchBar.text = "GitHubのリポジトリを検索できるよー"
         searchBar.delegate = self
     }
     
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
-        // ↓こうすれば初期のテキストを消せる
+        // ユーザー入力時にtextを初期化
         searchBar.text = ""
         return true
     }
@@ -51,7 +51,7 @@ class ViewController: UITableViewController, UISearchBarDelegate {
                     }
                 }
             }
-            // これ呼ばなきゃリストが更新されません
+            // urlSessionのタスクを開始
             task?.resume()
         }
     }
@@ -79,8 +79,8 @@ class ViewController: UITableViewController, UISearchBarDelegate {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // 画面遷移時に呼ばれる
-        selectedColumnIdx = indexPath.row
+        // 選択されたrowのdetailに遷移
+        selectedRowIdx = indexPath.row
         performSegue(withIdentifier: "Detail", sender: self)
     }
 }

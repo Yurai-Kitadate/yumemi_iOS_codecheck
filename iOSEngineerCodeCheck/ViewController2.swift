@@ -23,20 +23,21 @@ class ViewController2: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let repo = vc1.repo[vc1.selectedColumnIdx]
+        let repo = vc1.repo[vc1.selectedRowIdx]
         
         languageLabel.text = "Written in \(repo["language"] as? String ?? "")"
         starsLabel.text = "\(repo["stargazers_count"] as? Int ?? 0) stars"
         watchersLabel.text = "\(repo["watchers_count"] as? Int ?? 0) watchers"
         forksLabel.text = "\(repo["forks_count"] as? Int ?? 0) forks"
         issuesLabel.text = "\(repo["open_issues_count"] as? Int ?? 0) open issues"
+        
         getImage()
         
     }
     
     func getImage(){
         
-        let repo = vc1.repo[vc1.selectedColumnIdx]
+        let repo = vc1.repo[vc1.selectedRowIdx]
         
         titleLabel.text = repo["full_name"] as? String
         
