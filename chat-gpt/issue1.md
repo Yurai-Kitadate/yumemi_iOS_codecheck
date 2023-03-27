@@ -1,0 +1,3 @@
+- 私  :  UISearchBarをタップした時に関数を実行させたい
+  - GPTくん :  UISearchBarをタップしたときに特定の関数を呼び出すには、UISearchBarDelegateプロトコルを実装する必要があります。UISearchBarDelegateプロトコルにはUISearchBarのイベントに応答するためのメソッドが含まれています。
+    - 関数を適当に定義して、storyboardとかでタップ時に呼ばれる関数とか設定する感じだと思ってたけど、プロトコルで決められたメソッドの振る舞いを決めればいいっぽい(UIKitわからん...)

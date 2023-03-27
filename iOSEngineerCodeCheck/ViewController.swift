@@ -25,12 +25,6 @@ class ViewController: UITableViewController, UISearchBarDelegate {
         searchBar.delegate = self
     }
     
-    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
-        // ユーザー入力時にtextを初期化
-        searchBar.text = ""
-        return true
-    }
-    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         task?.cancel()
     }
