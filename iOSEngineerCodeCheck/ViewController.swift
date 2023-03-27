@@ -10,20 +10,20 @@ import UIKit
 
 class ViewController: UITableViewController, UISearchBarDelegate {
 
-    @IBOutlet weak var SchBr: UISearchBar!
+    @IBOutlet weak var searchBar: UISearchBar!
     
     var repo: [[String: Any]]=[]
     
     var task: URLSessionTask?
     var word: String!
     var url: String!
-    var idx: Int!
+    var selectedColumnIdx: Int!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        SchBr.text = "GitHubのリポジトリを検索できるよー"
-        SchBr.delegate = self
+        searchBar.text = "GitHubのリポジトリを検索できるよー"
+        searchBar.delegate = self
     }
     
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
@@ -84,7 +84,7 @@ class ViewController: UITableViewController, UISearchBarDelegate {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // 画面遷移時に呼ばれる
-        idx = indexPath.row
+        selectedColumnIdx = indexPath.row
         performSegue(withIdentifier: "Detail", sender: self)
         
     }
