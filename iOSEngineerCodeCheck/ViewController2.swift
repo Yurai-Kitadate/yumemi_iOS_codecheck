@@ -25,14 +25,17 @@ class ViewController2: UIViewController {
         
         let repo = vc1.repo[vc1.selectedRowIdx]
         
+        setLabelsText(repo: repo)
+        getImage()
+        
+    }
+    
+    func setLabelsText(repo:[String : Any]){
         languageLabel.text = "Written in \(repo["language"] as? String ?? "")"
         starsLabel.text = "\(repo["stargazers_count"] as? Int ?? 0) stars"
         watchersLabel.text = "\(repo["watchers_count"] as? Int ?? 0) watchers"
         forksLabel.text = "\(repo["forks_count"] as? Int ?? 0) forks"
         issuesLabel.text = "\(repo["open_issues_count"] as? Int ?? 0) open issues"
-        
-        getImage()
-        
     }
     
     func getImage(){
