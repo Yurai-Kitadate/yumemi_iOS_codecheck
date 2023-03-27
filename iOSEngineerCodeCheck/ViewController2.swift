@@ -27,7 +27,7 @@ class ViewController2: UIViewController {
         
         languageLabel.text = "Written in \(repo["language"] as? String ?? "")"
         starsLabel.text = "\(repo["stargazers_count"] as? Int ?? 0) stars"
-        watchersLabel.text = "\(repo["wachers_count"] as? Int ?? 0) watchers"
+        watchersLabel.text = "\(repo["watchers_count"] as? Int ?? 0) watchers"
         forksLabel.text = "\(repo["forks_count"] as? Int ?? 0) forks"
         issuesLabel.text = "\(repo["open_issues_count"] as? Int ?? 0) open issues"
         getImage()
