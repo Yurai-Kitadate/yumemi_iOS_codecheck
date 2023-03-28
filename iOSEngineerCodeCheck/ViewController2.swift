@@ -23,29 +23,34 @@ class ViewController2: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let repo = vc1.repo[vc1.selectedRowIdx]
+        let repo = vc1.repo.items[vc1.selectedRowIdx]
         
         setLabelsText(repo: repo)
         getImage()
         
     }
     
-    func setLabelsText(repo:[String : Any]){
+    func setLabelsText(repo:Repository?){
         
-        languageLabel.text = "Written in \(repo["language"] as? String ?? "")"
-        starsLabel.text = "\(repo["stargazers_count"] as? Int ?? 0) stars"
-        watchersLabel.text = "\(repo["watchers_count"] as? Int ?? 0) watchers"
-        forksLabel.text = "\(repo["forks_count"] as? Int ?? 0) forks"
-        issuesLabel.text = "\(repo["open_issues_count"] as? Int ?? 0) open issues"
+        languageLabel.text = "Written in \(repo?.language as? String ?? "")"
+        starsLabel.text = "\(repo?.stargazers_count as? Int ?? 0) stars"
+        watchersLabel.text = "\(repo?.watchers_count as? Int ?? 0) watchers"
+        forksLabel.text = "\(repo?.forks_count as? Int ?? 0) forks"
+        issuesLabel.text = "\(repo?.open_issues_count as? Int ?? 0) open issues"
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        vc1.task?.cancel()
     }
     
     func getImage(){
         
-        let repo = vc1.repo[vc1.selectedRowIdx]
+        let repo = vc1.repo.items[vc1.selectedRowIdx]
         
-        titleLabel.text = repo["full_name"] as? String ?? ""
+        titleLabel.text = repo?.full_name as? String ?? ""
         
-        if let owner = repo["owner"] as? [String: Any], let imgURL = owner["avatar_url"] as? String,let url = URL(string: imgURL){
+        if let owner = repo?.owner, let imgURL = owner.avatar_url,let url = URL(string: imgURL){
             URLSession.shared.dataTask(with: url) { (data, res, err) in
                 if let unwrappedData = data,let img = UIImage(data: unwrappedData){
                     DispatchQueue.main.async {
