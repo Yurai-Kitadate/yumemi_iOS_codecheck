@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		524CBFC929D1E87900E0D194 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 524CBFC829D1E87800E0D194 /* Main.storyboard */; };
+		524CBFCC29D2D1B600E0D194 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524CBFCB29D2D1B600E0D194 /* Repository.swift */; };
 		BF0A658D244F2A3B00280FA6 /* ViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0A658C244F2A3B00280FA6 /* ViewController2.swift */; };
 		BFD945DF244DC5E80012785A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD945DE244DC5E80012785A /* AppDelegate.swift */; };
 		BFD945E1244DC5E80012785A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD945E0244DC5E80012785A /* SceneDelegate.swift */; };
@@ -37,6 +38,7 @@
 
 /* Begin PBXFileReference section */
 		524CBFC829D1E87800E0D194 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		524CBFCB29D2D1B600E0D194 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
 		BF0A658C244F2A3B00280FA6 /* ViewController2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController2.swift; sourceTree = "<group>"; };
 		BFD945DB244DC5E80012785A /* iOSEngineerCodeCheck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOSEngineerCodeCheck.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFD945DE244DC5E80012785A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -78,6 +80,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		524CBFCA29D2D1A200E0D194 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				524CBFCB29D2D1B600E0D194 /* Repository.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		BFD945D2244DC5E80012785A = {
 			isa = PBXGroup;
 			children = (
@@ -101,6 +111,7 @@
 		BFD945DD244DC5E80012785A /* iOSEngineerCodeCheck */ = {
 			isa = PBXGroup;
 			children = (
+				524CBFCA29D2D1A200E0D194 /* Model */,
 				BFD945DE244DC5E80012785A /* AppDelegate.swift */,
 				BFD945E0244DC5E80012785A /* SceneDelegate.swift */,
 				524CBFC829D1E87800E0D194 /* Main.storyboard */,
@@ -264,6 +275,7 @@
 			files = (
 				BFD945E3244DC5E80012785A /* ViewController.swift in Sources */,
 				BF0A658D244F2A3B00280FA6 /* ViewController2.swift in Sources */,
+				524CBFCC29D2D1B600E0D194 /* Repository.swift in Sources */,
 				BFD945DF244DC5E80012785A /* AppDelegate.swift in Sources */,
 				BFD945E1244DC5E80012785A /* SceneDelegate.swift in Sources */,
 			);

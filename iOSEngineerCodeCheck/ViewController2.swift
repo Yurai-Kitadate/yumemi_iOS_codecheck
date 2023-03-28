@@ -39,6 +39,11 @@ class ViewController2: UIViewController {
         issuesLabel.text = "\(repo["open_issues_count"] as? Int ?? 0) open issues"
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        vc1.task?.cancel()
+    }
+    
     func getImage(){
         
         let repo = vc1.repo[vc1.selectedRowIdx]

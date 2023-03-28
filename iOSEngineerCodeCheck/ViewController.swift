@@ -34,6 +34,7 @@ class ViewController: UITableViewController, UISearchBarDelegate {
         
         if let word = searchBar.text ,!word.isEmpty,
            let url = URL(string: "https://api.github.com/search/repositories?q=\(word)"){
+            task?.cancel()
             task = URLSession.shared.dataTask(with:url) { (data, _, err) in
                 if err == nil,let unwrappedData = data,let obj = try? JSONSerialization.jsonObject(with: unwrappedData) as? [String: Any] {
                     if let items = obj["items"] as? [[String: Any]] {
