@@ -12,7 +12,8 @@ class ViewController: UITableViewController, UISearchBarDelegate {
     
     @IBOutlet weak var searchBar: UISearchBar!
     
-    var repo: [[String: Any]]=[]
+    let decoder = JSONDecoder()
+    var repo:  Repositories = Repositories(total_count: 0, incomplete_results: false, items: [])
     var task: URLSessionTask?
     var word: String?
     var url: String?
@@ -36,13 +37,17 @@ class ViewController: UITableViewController, UISearchBarDelegate {
            let url = URL(string: "https://api.github.com/search/repositories?q=\(word)"){
             task?.cancel()
             task = URLSession.shared.dataTask(with:url) { (data, _, err) in
-                if err == nil,let unwrappedData = data,let obj = try? JSONSerialization.jsonObject(with: unwrappedData) as? [String: Any] {
-                    if let items = obj["items"] as? [[String: Any]] {
-                        self.repo = items
+                do{
+                    let decoder = JSONDecoder()
+                    if let unwrappedData = data,let repositories = try decoder.decode(Repositories?.self, from: unwrappedData){
+                        let repositories = try decoder.decode(Repositories.self, from: unwrappedData)
+                        self.repo = repositories
                         DispatchQueue.main.async {
                             self.tableView.reloadData()
                         }
                     }
+                }catch{
+                    print("json parse error")
                 }
             }
             // urlSessionのタスクを開始
@@ -61,15 +66,15 @@ class ViewController: UITableViewController, UISearchBarDelegate {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return repo.count
+        return repo.items.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = UITableViewCell()
-        let rp = repo[indexPath.row]
-        cell.textLabel?.text = rp["full_name"] as? String ?? ""
-        cell.detailTextLabel?.text = rp["language"] as? String ?? ""
+        let rp = repo.items[indexPath.row]
+        cell.textLabel?.text = rp?.full_name as? String ?? ""
+        cell.detailTextLabel?.text = rp?.language as? String ?? ""
         cell.tag = indexPath.row
         return cell
     }
