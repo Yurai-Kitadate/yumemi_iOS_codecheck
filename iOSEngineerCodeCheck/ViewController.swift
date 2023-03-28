@@ -21,8 +21,8 @@ class ViewController: UITableViewController, UISearchBarDelegate {
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        //searchBarのデリゲートとtextの初期値を設定
-        searchBar.text = "GitHubのリポジトリを検索できるよー"
+        //searchBarのデリゲートとplaceholderを設定
+        searchBar.placeholder = "GitHubのリポジトリを検索できるよー"
         searchBar.delegate = self
     }
     
@@ -34,8 +34,8 @@ class ViewController: UITableViewController, UISearchBarDelegate {
         
         if let word = searchBar.text ,!word.isEmpty,
            let url = URL(string: "https://api.github.com/search/repositories?q=\(word)"){
-            task = URLSession.shared.dataTask(with:url) { (data, res, err) in
-                if let unwrappedData = data,let obj = try? JSONSerialization.jsonObject(with: unwrappedData) as? [String: Any] {
+            task = URLSession.shared.dataTask(with:url) { (data, _, err) in
+                if err == nil,let unwrappedData = data,let obj = try? JSONSerialization.jsonObject(with: unwrappedData) as? [String: Any] {
                     if let items = obj["items"] as? [[String: Any]] {
                         self.repo = items
                         DispatchQueue.main.async {
@@ -43,7 +43,6 @@ class ViewController: UITableViewController, UISearchBarDelegate {
                         }
                     }
                 }
-                
             }
             // urlSessionのタスクを開始
             task?.resume()
