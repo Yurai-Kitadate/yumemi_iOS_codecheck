@@ -27,11 +27,8 @@ class ViewController: UITableViewController, UISearchBarDelegate {
         searchBar.delegate = self
     }
 
-//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//        task?.cancel()
-//    }
-
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar){
+        
         Task.init {
             await client.load(searchBarWord: searchBar.text)
             DispatchQueue.main.async {
