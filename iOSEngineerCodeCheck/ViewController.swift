@@ -13,8 +13,6 @@ class ViewController: UITableViewController, UISearchBarDelegate {
     @IBOutlet weak var searchBar: UISearchBar!
 
     let decoder = JSONDecoder()
-    var repo:  Repositories = Repositories(total_count: 0, incomplete_results: false, items: [])
-    var task: URLSessionTask?
     var word: String?
     var url: String?
     var selectedRowIdx: Int = 0
@@ -29,14 +27,13 @@ class ViewController: UITableViewController, UISearchBarDelegate {
         searchBar.delegate = self
     }
 
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        task?.cancel()
-    }
+//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+//        task?.cancel()
+//    }
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar){
         Task.init {
             await client.load(searchBarWord: searchBar.text)
-            self.repo = client.repo
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
@@ -54,13 +51,13 @@ class ViewController: UITableViewController, UISearchBarDelegate {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 
-        return repo.items.count
+        return client.repo.items.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         let cell = UITableViewCell()
-        let rp = repo.items[indexPath.row]
+        let rp = client.repo.items[indexPath.row]
         cell.textLabel?.text = rp?.full_name as? String ?? ""
         cell.detailTextLabel?.text = rp?.language as? String ?? ""
         cell.tag = indexPath.row
@@ -98,7 +95,6 @@ class GitHubAPIClient{
                 let (data, _) = try await URLSession.shared.data(for: urlRequest)
                 let d = JSONDecoder()
                 repo = try! d.decode(Repositories.self, from: data)
-                print(repo)
             }catch{
                 print("json parse error")
             }
