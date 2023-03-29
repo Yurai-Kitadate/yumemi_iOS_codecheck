@@ -20,10 +20,12 @@ class ViewController2: UIViewController {
     
     var vc1: ViewController!
     
+    var imageLoader : ImageLoader = ImageLoader()
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         
-        let repo = vc1.repo.items[vc1.selectedRowIdx]
+        let repo = vc1.client.repo.items[vc1.selectedRowIdx]
         
         setLabelsText(repo: repo)
         getImage()
@@ -37,27 +39,39 @@ class ViewController2: UIViewController {
         watchersLabel.text = "\(repo?.watchers_count as? Int ?? 0) watchers"
         forksLabel.text = "\(repo?.forks_count as? Int ?? 0) forks"
         issuesLabel.text = "\(repo?.open_issues_count as? Int ?? 0) open issues"
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        vc1.task?.cancel()
+        titleLabel.text = repo?.full_name as? String ?? ""
     }
     
     func getImage(){
         
-        let repo = vc1.repo.items[vc1.selectedRowIdx]
+        Task.init {
+            await imageLoader.load(owner: vc1.client.repo.items[vc1.selectedRowIdx]?.owner)
+            DispatchQueue.main.async {
+                self.repoImageView.image = self.imageLoader.image
+            }
+        }
+    }
+}
+
+class ImageLoader{
+    
+    var image : UIImage?
+    func load(owner:Owner?)async{
         
-        titleLabel.text = repo?.full_name as? String ?? ""
-        
-        if let owner = repo?.owner, let imgURL = owner.avatar_url,let url = URL(string: imgURL){
-            URLSession.shared.dataTask(with: url) { (data, res, err) in
-                if let unwrappedData = data,let img = UIImage(data: unwrappedData){
+        if let unwrappedOwner = owner,let unwrapped_url = unwrappedOwner.avatar_url,let url = URL(string: unwrapped_url){
+            print(unwrapped_url)
+            var urlRequest = URLRequest(url: url)
+            do{
+                urlRequest.httpMethod = "GET"
+                let (data, _) = try await URLSession.shared.data(for: urlRequest)
+                if let img = UIImage(data: data){
                     DispatchQueue.main.async {
-                        self.repoImageView.image = img
+                        self.image = img
                     }
                 }
-            }.resume()
+            }catch{
+                print("image load error")
+            }
         }
     }
 }
