@@ -8,53 +8,44 @@
 
 import UIKit
 
-class ViewController: UITableViewController, UISearchBarDelegate {
-
+class ViewController: UITableViewController,UISearchBarDelegate{
+    
     @IBOutlet weak var searchBar: UISearchBar!
-
+    
     let decoder = JSONDecoder()
     var word: String?
     var url: String?
     var selectedRowIdx: Int = 0
-
+    
     var client : GitHubAPIClient = GitHubAPIClient()
-
+    
     override func viewDidLoad() {
-
+        
         super.viewDidLoad()
         //searchBarのデリゲートとplaceholderを設定
         searchBar.placeholder = "GitHubのリポジトリを検索できるよー"
         searchBar.delegate = self
     }
-
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar){
-        
-        Task.init {
-            await client.load(searchBarWord: searchBar.text)
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        }
-    }
-
+    
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-
+        
         if segue.identifier == "Detail"{
             if let detail = segue.destination as? ViewController2 {
                 detail.vc1 = self
             }
         }
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let repo = client.repo{
             return repo.items.count
         }
         return 0
     }
-
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
+        
         let cell = UITableViewCell()
         if let items = client.repo?.items[indexPath.row]{
             cell.textLabel?.text = items.full_name ?? ""
@@ -63,18 +54,18 @@ class ViewController: UITableViewController, UISearchBarDelegate {
         }
         return cell
     }
-
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
+        
         // 選択されたrowのdetailに遷移
         selectedRowIdx = indexPath.row
         performSegue(withIdentifier: "Detail", sender: self)
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
-
+        
         super.viewWillAppear(animated)
-
+        
         if let indexPath = tableView.indexPathForSelectedRow {
             tableView.deselectRow(at: indexPath, animated: true)
             tableView.scrollToRow(at: indexPath, at: .none, animated: true)
@@ -82,22 +73,41 @@ class ViewController: UITableViewController, UISearchBarDelegate {
     }
 }
 
-
-class GitHubAPIClient{
-    var repo:  Repositories?
-
-    func load(searchBarWord:String?)async{
-        if let word = searchBarWord ,!word.isEmpty,
-           let url = URL(string: "https://api.github.com/search/repositories?q=\(word)"){
-            var urlRequest = URLRequest(url: url)
-            do{
-                urlRequest.httpMethod = "GET"
-                let (data, _) = try await URLSession.shared.data(for: urlRequest)
-                let d = JSONDecoder()
-                repo = try! d.decode(Repositories.self, from: data)
-            }catch{
-                print("json parse error")
+extension ViewController: SearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        Task.init {
+            await client.load(searchBarWord: searchBar.text)
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
             }
         }
     }
 }
+
+protocol SearchBarDelegate{
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar)
+}
+
+class GitHubAPIClient{
+    var repo:  Repositories?
+    var githubUrlPrefix = "https://api.github.com/search/repositories?q="
+    
+    func searchRepositories(word : String) async -> Data?{
+        
+        return await execute_url_request(str:  githubUrlPrefix + word)
+    }
+    
+    func load(searchBarWord:String?)async{
+        if let word = searchBarWord,let data = await searchRepositories(word: word){
+            let d = JSONDecoder()
+            DispatchQueue.main.async {
+                do{
+                    self.repo = try d.decode(Repositories.self, from: data)
+                }catch{
+                    print("json parse error")
+                }
+            }
+        }
+    }
+}
+
