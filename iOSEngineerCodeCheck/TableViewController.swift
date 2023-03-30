@@ -11,10 +11,7 @@ import UIKit
 class TableViewController: UITableViewController,UISearchBarDelegate{
     
     @IBOutlet weak var searchBar: UISearchBar!
-    
-    let decoder = JSONDecoder()
-    var word: String?
-    var url: String?
+
     var selectedRowIdx: Int = 0
     
     var repositriesViewModel = RepositoriesLoader()
