@@ -25,7 +25,7 @@ class ViewController2: UIViewController {
         
         super.viewDidLoad()
         
-        let repo = vc1.client.repo.items[vc1.selectedRowIdx]
+        let repo = vc1.client.repo?.items[vc1.selectedRowIdx]
         
         setLabelsText(repo: repo)
         getImage()
@@ -45,7 +45,7 @@ class ViewController2: UIViewController {
     func getImage(){
         
         Task.init {
-            await imageLoader.load(owner: vc1.client.repo.items[vc1.selectedRowIdx]?.owner)
+            await imageLoader.load(owner: vc1.client.repo?.items[vc1.selectedRowIdx]?.owner)
             DispatchQueue.main.async {
                 self.repoImageView.image = self.imageLoader.image
             }
@@ -62,6 +62,7 @@ class ImageLoader{
             print(unwrapped_url)
             var urlRequest = URLRequest(url: url)
             do{
+                print(unwrapped_url)
                 urlRequest.httpMethod = "GET"
                 let (data, _) = try await URLSession.shared.data(for: urlRequest)
                 if let img = UIImage(data: data){

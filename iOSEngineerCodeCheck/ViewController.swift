@@ -47,17 +47,20 @@ class ViewController: UITableViewController, UISearchBarDelegate {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-
-        return client.repo.items.count
+        if let repo = client.repo{
+            return repo.items.count
+        }
+        return 0
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         let cell = UITableViewCell()
-        let rp = client.repo.items[indexPath.row]
-        cell.textLabel?.text = rp?.full_name as? String ?? ""
-        cell.detailTextLabel?.text = rp?.language as? String ?? ""
-        cell.tag = indexPath.row
+        if let items = client.repo?.items[indexPath.row]{
+            cell.textLabel?.text = items.full_name ?? ""
+            cell.detailTextLabel?.text = items.language ?? ""
+            cell.tag = indexPath.row
+        }
         return cell
     }
 
@@ -81,7 +84,7 @@ class ViewController: UITableViewController, UISearchBarDelegate {
 
 
 class GitHubAPIClient{
-    var repo:  Repositories = Repositories(total_count: 0, incomplete_results: false, items: [])
+    var repo:  Repositories?
 
     func load(searchBarWord:String?)async{
         if let word = searchBarWord ,!word.isEmpty,

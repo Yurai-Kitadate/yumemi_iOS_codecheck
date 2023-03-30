@@ -1,34 +1,49 @@
-//
-//  iOSEngineerCodeCheckTests.swift
-//  iOSEngineerCodeCheckTests
-//
-//  Created by 史 翔新 on 2020/04/20.
-//  Copyright © 2020 YUMEMI Inc. All rights reserved.
-//
-
 import XCTest
 @testable import iOSEngineerCodeCheck
 
-class iOSEngineerCodeCheckTests: XCTestCase {
+class ImageLoaderTests: XCTestCase {
+
+    var imageLoader: ImageLoader!
+
+    override func setUp() {
+        super.setUp()
+        imageLoader = ImageLoader()
+    }
+
+    override func tearDown() {
+        imageLoader = nil
+        super.tearDown()
+    }
+
+    func testLoadImage() async throws {
+        let owner = Owner(avatar_url: "https://avatars.githubusercontent.com/u/31836049?v=4")
+        
+        await imageLoader.load(owner: owner)
+
+        XCTAssertNotNil(imageLoader.image)
+    }
+
+}
+
+class GitHubAPIClientTests: XCTestCase {
+
+    var apiClient: GitHubAPIClient!
 
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        try super.setUpWithError()
+        apiClient = GitHubAPIClient()
     }
 
     override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        apiClient = nil
+        try super.tearDownWithError()
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
+    func testLoad() async throws {
+        let searchBarWord = "swift"
+        await apiClient.load(searchBarWord: searchBarWord)
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+        XCTAssertNotNil(apiClient.repo)
     }
 
 }
