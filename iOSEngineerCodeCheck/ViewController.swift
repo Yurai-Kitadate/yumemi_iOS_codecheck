@@ -17,7 +17,7 @@ class ViewController: UITableViewController,UISearchBarDelegate{
     var url: String?
     var selectedRowIdx: Int = 0
     
-    var client : GitHubAPIClient = GitHubAPIClient()
+    var repositriesViewModel = RepositoriesLoader()
     
     override func viewDidLoad() {
         
@@ -38,7 +38,7 @@ class ViewController: UITableViewController,UISearchBarDelegate{
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let repo = client.repo{
+        if let repo = repositriesViewModel.repo{
             return repo.items.count
         }
         return 0
@@ -47,7 +47,7 @@ class ViewController: UITableViewController,UISearchBarDelegate{
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = UITableViewCell()
-        if let items = client.repo?.items[indexPath.row]{
+        if let items = repositriesViewModel.repo?.items[indexPath.row]{
             cell.textLabel?.text = items.full_name ?? ""
             cell.detailTextLabel?.text = items.language ?? ""
             cell.tag = indexPath.row
@@ -76,7 +76,7 @@ class ViewController: UITableViewController,UISearchBarDelegate{
 extension ViewController: SearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         Task.init {
-            await client.load(searchBarWord: searchBar.text)
+            await repositriesViewModel.load(searchBarWord: searchBar.text)
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
@@ -88,17 +88,12 @@ protocol SearchBarDelegate{
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar)
 }
 
-class GitHubAPIClient{
-    var repo:  Repositories?
-    var githubUrlPrefix = "https://api.github.com/search/repositories?q="
+class RepositoriesLoader{
     
-    func searchRepositories(word : String) async -> Data?{
-        
-        return await execute_url_request(str:  githubUrlPrefix + word)
-    }
+    var repo : Repositories?
     
     func load(searchBarWord:String?)async{
-        if let word = searchBarWord,let data = await searchRepositories(word: word){
+        if let word = searchBarWord,let data = await searchFromUrl(searchType: .repositories, keyWord: word){
             let d = JSONDecoder()
             DispatchQueue.main.async {
                 do{
@@ -110,4 +105,3 @@ class GitHubAPIClient{
         }
     }
 }
-

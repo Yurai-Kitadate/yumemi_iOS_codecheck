@@ -31,3 +31,16 @@ func execute_url_request(str:String?)async -> Data? {
     print("url unwrapp error")
     return nil
 }
+
+
+func searchFromUrl(searchType:SearchType,keyWord : String) async -> Data?{
+    
+    switch searchType{
+    case .repositories:
+        let githubUrlPrefix = "https://api.github.com/search/repositories?q="
+        return await execute_url_request(str:  githubUrlPrefix + keyWord)
+    case .image:
+        return await execute_url_request(str: keyWord)
+        
+    }
+}

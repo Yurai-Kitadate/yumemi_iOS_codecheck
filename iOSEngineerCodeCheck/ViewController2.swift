@@ -25,7 +25,7 @@ class ViewController2: UIViewController {
         
         super.viewDidLoad()
         
-        let repo = vc1.client.repo?.items[vc1.selectedRowIdx]
+        let repo = vc1.repositriesViewModel.repo?.items[vc1.selectedRowIdx]
         
         setLabelsText(repo: repo)
         getImage()
@@ -45,7 +45,7 @@ class ViewController2: UIViewController {
     func getImage(){
         
         Task.init {
-            await imageLoader.load(owner: vc1.client.repo?.items[vc1.selectedRowIdx]?.owner)
+            await imageLoader.load(owner: vc1.repositriesViewModel.repo?.items[vc1.selectedRowIdx]?.owner)
             DispatchQueue.main.async {
                 self.repoImageView.image = self.imageLoader.image
             }
@@ -57,15 +57,10 @@ class ImageLoader{
     
     var image : UIImage?
     
-    func searchImage(url : String) async -> Data?{
-        
-        return await execute_url_request(str: url)
-    }
-    
     func load(owner:Owner?)async{
         
         if let unwrappedOwner = owner,let avatar_url = unwrappedOwner.avatar_url{
-            let data = await execute_url_request(str: avatar_url)
+            let data = await searchFromUrl(searchType: .image, keyWord: avatar_url)
             if let unwrappedData = data,let img = UIImage(data: unwrappedData){
                 DispatchQueue.main.async {
                     self.image = img
@@ -74,4 +69,3 @@ class ImageLoader{
         }
     }
 }
-
