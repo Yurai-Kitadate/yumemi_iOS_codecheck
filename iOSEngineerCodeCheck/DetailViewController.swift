@@ -20,15 +20,16 @@ class DetailViewController: UIViewController {
     
     var vc1: TableViewController!
     
-    var imageLoader : ImageLoader = ImageLoader()
     override func viewDidLoad() {
         
         super.viewDidLoad()
         
-        let repo = vc1.repositriesViewModel.repo?.items[vc1.selectedRowIdx]
+        let repo = vc1.repositoriesLoader.repositories?.items[vc1.selectedRowIdx]
         
         setLabelsText(repo: repo)
-        getImage()
+        if let owner = repo?.owner, let avatarUrl = owner.avatar_url {
+            getImage(from: avatarUrl)
+        }
         
     }
     
@@ -42,31 +43,16 @@ class DetailViewController: UIViewController {
         titleLabel.text = repo?.full_name as? String ?? ""
     }
     
-    func getImage(){
+    func getImage(from urlString: String){
         
         Task.init {
-            await imageLoader.load(owner: vc1.repositriesViewModel.repo?.items[vc1.selectedRowIdx]?.owner)
+            guard let data = await searchFromUrl(searchType: .image, keyWord: urlString) else{
+                print("image search error")
+                return
+            }
             DispatchQueue.main.async {
-                self.repoImageView.image = self.imageLoader.image
+                self.repoImageView.image = UIImage(data: data)
             }
         }
     }
 }
-
-class ImageLoader{
-    
-    var image : UIImage?
-    
-    func load(owner:Owner?)async{
-        
-        if let unwrappedOwner = owner,let avatar_url = unwrappedOwner.avatar_url{
-            let data = await searchFromUrl(searchType: .image, keyWord: avatar_url)
-            if let unwrappedData = data,let img = UIImage(data: unwrappedData){
-                DispatchQueue.main.async {
-                    self.image = img
-                }
-            }
-        }
-    }
-}
-

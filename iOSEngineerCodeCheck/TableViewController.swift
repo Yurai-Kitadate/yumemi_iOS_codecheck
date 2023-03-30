@@ -11,10 +11,14 @@ import UIKit
 class TableViewController: UITableViewController,UISearchBarDelegate{
     
     @IBOutlet weak var searchBar: UISearchBar!
-
     var selectedRowIdx: Int = 0
+    var repositories: Repositories? {
+            didSet {
+                self.tableView.reloadData()
+            }
+        }
     
-    var repositriesViewModel = RepositoriesLoader()
+    var repositoriesLoader = RepositoriesLoader()
     
     override func viewDidLoad() {
         
@@ -35,7 +39,7 @@ class TableViewController: UITableViewController,UISearchBarDelegate{
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let repo = repositriesViewModel.repo{
+        if let repo = repositoriesLoader.repositories{
             return repo.items.count
         }
         return 0
@@ -44,7 +48,7 @@ class TableViewController: UITableViewController,UISearchBarDelegate{
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = UITableViewCell()
-        guard let items = repositriesViewModel.repo?.items[indexPath.row] else{
+        guard let items = repositoriesLoader.repositories?.items[indexPath.row] else{
             return cell
         }
         cell.set(fullName: items.full_name, language: items.language, indexPath: indexPath)
@@ -81,9 +85,9 @@ extension UITableViewCell{
 extension TableViewController: SearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         Task.init {
-            await repositriesViewModel.load(searchBarWord: searchBar.text)
+            await repositoriesLoader.load(searchBarWord: searchBar.text)
             DispatchQueue.main.async {
-                self.tableView.reloadData()
+                self.repositories = self.repositoriesLoader.repositories
             }
         }
     }
@@ -95,14 +99,14 @@ protocol SearchBarDelegate{
 
 class RepositoriesLoader{
     
-    var repo : Repositories?
+    var repositories : Repositories?
     
     func load(searchBarWord:String?)async{
         if let word = searchBarWord,let data = await searchFromUrl(searchType: .repositories, keyWord: word){
             let d = JSONDecoder()
             DispatchQueue.main.async {
                 do{
-                    self.repo = try d.decode(Repositories.self, from: data)
+                    self.repositories = try d.decode(Repositories.self, from: data)
                 }catch{
                     print("json parse error")
                 }
