@@ -1,4 +1,4 @@
-//
+
 //  ViewController.swift
 //  iOSEngineerCodeCheck
 //
@@ -8,13 +8,10 @@
 
 import UIKit
 
-class ViewController: UITableViewController,UISearchBarDelegate{
+class TableViewController: UITableViewController,UISearchBarDelegate{
     
     @IBOutlet weak var searchBar: UISearchBar!
-    
-    let decoder = JSONDecoder()
-    var word: String?
-    var url: String?
+
     var selectedRowIdx: Int = 0
     
     var repositriesViewModel = RepositoriesLoader()
@@ -31,7 +28,7 @@ class ViewController: UITableViewController,UISearchBarDelegate{
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == "Detail"{
-            if let detail = segue.destination as? ViewController2 {
+            if let detail = segue.destination as? DetailViewController {
                 detail.vc1 = self
             }
         }
@@ -47,11 +44,10 @@ class ViewController: UITableViewController,UISearchBarDelegate{
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = UITableViewCell()
-        if let items = repositriesViewModel.repo?.items[indexPath.row]{
-            cell.textLabel?.text = items.full_name ?? ""
-            cell.detailTextLabel?.text = items.language ?? ""
-            cell.tag = indexPath.row
+        guard let items = repositriesViewModel.repo?.items[indexPath.row] else{
+            return cell
         }
+        cell.set(fullName: items.full_name, language: items.language, indexPath: indexPath)
         return cell
     }
     
@@ -73,7 +69,16 @@ class ViewController: UITableViewController,UISearchBarDelegate{
     }
 }
 
-extension ViewController: SearchBarDelegate {
+extension UITableViewCell{
+    
+    func set(fullName:String?,language:String?,indexPath: IndexPath){
+        self.textLabel?.text = fullName ?? ""
+        self.detailTextLabel?.text = language ?? ""
+        self.tag = indexPath.row
+    }
+}
+
+extension TableViewController: SearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         Task.init {
             await repositriesViewModel.load(searchBarWord: searchBar.text)

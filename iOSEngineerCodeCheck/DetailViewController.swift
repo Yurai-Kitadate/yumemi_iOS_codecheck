@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController2: UIViewController {
+class DetailViewController: UIViewController {
     
     @IBOutlet weak var repoImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
@@ -18,7 +18,7 @@ class ViewController2: UIViewController {
     @IBOutlet weak var forksLabel: UILabel!
     @IBOutlet weak var issuesLabel: UILabel!
     
-    var vc1: ViewController!
+    var vc1: TableViewController!
     
     var imageLoader : ImageLoader = ImageLoader()
     override func viewDidLoad() {
@@ -69,3 +69,4 @@ class ImageLoader{
         }
     }
 }
+
