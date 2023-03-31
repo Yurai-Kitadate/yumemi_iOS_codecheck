@@ -18,7 +18,7 @@ class TableViewController: UITableViewController,UISearchBarDelegate{
             }
         }
     
-    var repositoriesLoader = RepositoriesLoader()
+    let repositoriesModel = RepositoriesViewModel()
     
     override func viewDidLoad() {
         
@@ -39,16 +39,13 @@ class TableViewController: UITableViewController,UISearchBarDelegate{
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let repo = repositoriesLoader.repositories{
-            return repo.items.count
-        }
-        return 0
+        return self.repositories?.items.count ?? 0
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = UITableViewCell()
-        guard let items = repositoriesLoader.repositories?.items[indexPath.row] else{
+        guard let items = self.repositories?.items[indexPath.row] else{
             return cell
         }
         cell.set(fullName: items.full_name, language: items.language, indexPath: indexPath)
@@ -82,12 +79,13 @@ extension UITableViewCell{
     }
 }
 
+
 extension TableViewController: SearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         Task.init {
-            await repositoriesLoader.load(searchBarWord: searchBar.text)
+            await repositoriesModel.load(searchBarWord: searchBar.text)
             DispatchQueue.main.async {
-                self.repositories = self.repositoriesLoader.repositories
+                self.repositories = self.repositoriesModel.repositories
             }
         }
     }
@@ -97,7 +95,7 @@ protocol SearchBarDelegate{
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar)
 }
 
-class RepositoriesLoader{
+class RepositoriesViewModel{
     
     var repositories : Repositories?
     
