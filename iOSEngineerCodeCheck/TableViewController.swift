@@ -18,7 +18,7 @@ class TableViewController: UITableViewController,UISearchBarDelegate{
             }
         }
     
-    let repositoriesModel = RepositoriesModel()
+    let repositoriesModel = RepositoriesViewModel()
     
     override func viewDidLoad() {
         
@@ -79,6 +79,7 @@ extension UITableViewCell{
     }
 }
 
+
 extension TableViewController: SearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         Task.init {
@@ -94,7 +95,7 @@ protocol SearchBarDelegate{
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar)
 }
 
-class RepositoriesModel{
+class RepositoriesViewModel{
     
     var repositories : Repositories?
     

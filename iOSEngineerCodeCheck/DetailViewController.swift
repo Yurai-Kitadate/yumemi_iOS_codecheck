@@ -19,7 +19,7 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var issuesLabel: UILabel!
     
     var vc1: TableViewController!
-    var imageModel : ImageModel = ImageModel()
+    var imageModel : ImageViewModel = ImageViewModel()
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -53,7 +53,7 @@ class DetailViewController: UIViewController {
     }
 }
 
-class ImageModel {
+class ImageViewModel {
     func getImage(from urlString: String, completion: @escaping (UIImage?) -> Void) {
         Task.init {
             if let data = await searchFromUrl(searchType: .image, keyWord:urlString) {
