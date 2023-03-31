@@ -19,18 +19,27 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var issuesLabel: UILabel!
     
     var vc1: TableViewController!
-    
+    var imageModel : ImageModel = ImageModel()
     override func viewDidLoad() {
         
         super.viewDidLoad()
         
-        let repo = vc1.repositoriesLoader.repositories?.items[vc1.selectedRowIdx]
+        let repo = vc1.repositoriesModel.repositories?.items[vc1.selectedRowIdx]
         
         setLabelsText(repo: repo)
-        if let owner = repo?.owner, let avatarUrl = owner.avatar_url {
-            getImage(from: avatarUrl)
+        setImage(owner: repo?.owner)
+    }
+    
+    
+    
+    func setImage(owner : Owner?){
+        if let owner = owner, let avatarUrl = owner.avatar_url {
+            self.imageModel.getImage(from: avatarUrl) { [weak self] image in
+                DispatchQueue.main.async {
+                    self?.repoImageView.image = image
+                }
+            }
         }
-        
     }
     
     func setLabelsText(repo:Repository?){
@@ -42,16 +51,18 @@ class DetailViewController: UIViewController {
         issuesLabel.text = "\(repo?.open_issues_count as? Int ?? 0) open issues"
         titleLabel.text = repo?.full_name as? String ?? ""
     }
-    
-    func getImage(from urlString: String){
-        
+}
+
+class ImageModel {
+    func getImage(from urlString: String, completion: @escaping (UIImage?) -> Void) {
         Task.init {
-            guard let data = await searchFromUrl(searchType: .image, keyWord: urlString) else{
-                print("image search error")
-                return
-            }
-            DispatchQueue.main.async {
-                self.repoImageView.image = UIImage(data: data)
+            if let data = await searchFromUrl(searchType: .image, keyWord:urlString) {
+                let image = UIImage(data: data)
+                DispatchQueue.main.async {
+                    completion(image)
+                }
+            } else {
+                completion(nil)
             }
         }
     }
