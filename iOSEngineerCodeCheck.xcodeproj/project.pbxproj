@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5213A22C29D7104A006B3096 /* RepositoriesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5213A22B29D7104A006B3096 /* RepositoriesViewModel.swift */; };
+		5213A22E29D7105F006B3096 /* ImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5213A22D29D7105F006B3096 /* ImageViewModel.swift */; };
 		524CBFC929D1E87900E0D194 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 524CBFC829D1E87800E0D194 /* Main.storyboard */; };
 		524CBFCC29D2D1B600E0D194 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524CBFCB29D2D1B600E0D194 /* Repository.swift */; };
 		52B19EF329D5206D0012FFBD /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52B19EF229D5206C0012FFBD /* Util.swift */; };
@@ -39,6 +41,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5213A22B29D7104A006B3096 /* RepositoriesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoriesViewModel.swift; sourceTree = "<group>"; };
+		5213A22D29D7105F006B3096 /* ImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewModel.swift; sourceTree = "<group>"; };
 		524CBFC829D1E87800E0D194 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		524CBFCB29D2D1B600E0D194 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
 		52B19EF229D5206C0012FFBD /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
@@ -84,6 +88,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5213A22A29D71030006B3096 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				5213A22B29D7104A006B3096 /* RepositoriesViewModel.swift */,
+				5213A22D29D7105F006B3096 /* ImageViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		524CBFCA29D2D1A200E0D194 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -116,6 +129,7 @@
 		BFD945DD244DC5E80012785A /* iOSEngineerCodeCheck */ = {
 			isa = PBXGroup;
 			children = (
+				5213A22A29D71030006B3096 /* ViewModel */,
 				524CBFCA29D2D1A200E0D194 /* Model */,
 				52B19EF229D5206C0012FFBD /* Util.swift */,
 				BFD945DE244DC5E80012785A /* AppDelegate.swift */,
@@ -281,6 +295,8 @@
 			files = (
 				52B19EF329D5206D0012FFBD /* Util.swift in Sources */,
 				52B19EF729D5E8A90012FFBD /* TableViewController.swift in Sources */,
+				5213A22C29D7104A006B3096 /* RepositoriesViewModel.swift in Sources */,
+				5213A22E29D7105F006B3096 /* ImageViewModel.swift in Sources */,
 				524CBFCC29D2D1B600E0D194 /* Repository.swift in Sources */,
 				BFD945DF244DC5E80012785A /* AppDelegate.swift in Sources */,
 				BFD945E1244DC5E80012785A /* SceneDelegate.swift in Sources */,
@@ -455,6 +471,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = iOSEngineerCodeCheck/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -473,6 +490,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = iOSEngineerCodeCheck/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

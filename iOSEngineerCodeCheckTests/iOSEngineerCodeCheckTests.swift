@@ -1,49 +1,52 @@
 import XCTest
 @testable import iOSEngineerCodeCheck
 
-class ImageLoaderTests: XCTestCase {
-
-    var imageLoader: ImageLoader!
-
+class ImageViewModelTests: XCTestCase {
+    
+    var imageViewModel: ImageViewModel?
+    
     override func setUp() {
         super.setUp()
-        imageLoader = ImageLoader()
+        imageViewModel =  ImageViewModel()
     }
-
+    
     override func tearDown() {
-        imageLoader = nil
+        imageViewModel = nil
         super.tearDown()
     }
-
-    func testLoadImage() async throws {
+    
+    func testLoad() async throws {
         let owner = Owner(avatar_url: "https://avatars.githubusercontent.com/u/31836049?v=4")
         
-        await imageLoader.load(owner: owner)
-
-        XCTAssertNotNil(imageLoader.image)
+        self.imageViewModel?.getImage(from: owner.avatar_url ?? "") { [weak self] image in
+            DispatchQueue.main.async {
+                XCTAssertNotNil(image)
+            }
+            
+        }
     }
-
+    
 }
 
-class GitHubAPIClientTests: XCTestCase {
-
-    var apiClient: GitHubAPIClient!
-
+class RepositoriesViewModelTests: XCTestCase {
+    
+    var repositoriesViewModel : RepositoriesViewModel?
+    
     override func setUpWithError() throws {
         try super.setUpWithError()
-        apiClient = GitHubAPIClient()
+        repositoriesViewModel = RepositoriesViewModel()
     }
-
+    
     override func tearDownWithError() throws {
-        apiClient = nil
+        repositoriesViewModel = nil
         try super.tearDownWithError()
     }
-
+    
     func testLoad() async throws {
         let searchBarWord = "swift"
-        await apiClient.load(searchBarWord: searchBarWord)
-
-        XCTAssertNotNil(apiClient.repo)
+        await repositoriesViewModel?.load(searchBarWord: searchBarWord)
+        sleep(3)
+        XCTAssertNotNil(repositoriesViewModel?.repositories)
     }
-
+    
 }

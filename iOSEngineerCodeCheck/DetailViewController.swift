@@ -52,18 +52,3 @@ class DetailViewController: UIViewController {
         titleLabel.text = repo?.full_name as? String ?? ""
     }
 }
-
-class ImageViewModel {
-    func getImage(from urlString: String, completion: @escaping (UIImage?) -> Void) {
-        Task.init {
-            if let data = await searchFromUrl(searchType: .image, keyWord:urlString) {
-                let image = UIImage(data: data)
-                DispatchQueue.main.async {
-                    completion(image)
-                }
-            } else {
-                completion(nil)
-            }
-        }
-    }
-}
