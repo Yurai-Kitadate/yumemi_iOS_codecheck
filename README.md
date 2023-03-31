@@ -8,7 +8,7 @@
 
 本アプリは GitHub のリポジトリーを検索するアプリです。
 
-![動作イメージ](README_Images/app.gif)
+![動作イメージ](README_Images/controll.gif)
 
 ### 環境
 
@@ -35,7 +35,7 @@ Issues を確認した上、本プロジェクトを [**Duplicate** してくだ
 | 中途／経験者 | 必須 | 必須 | 選択 |
 
 
-課題 Issueをご自身のリポジトリーにコピーするGitHub Actionsをご用意しております。  
+課題 Issueをご自身のリポジトリーにコピーするGitHub Actionsをご用意しております。
 [こちらのWorkflow](./.github/workflows/copy-issues.yml)を[手動でトリガーする](https://docs.github.com/ja/actions/managing-workflow-runs/manually-running-a-workflow)ことでコピーできますのでご活用下さい。
 
 課題が完成したら、リポジトリーのアドレスを教えてください。
